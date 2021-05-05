@@ -1,5 +1,5 @@
 import "./style.scss";
-import { getAPIKey } from "/apiKey.js";
+import { getAPIKey } from "./apiKey.js";
 
 const convertTemp = function (temp, unit = "Kelvin") {
   const unitConversion = {
@@ -13,7 +13,7 @@ const convertTemp = function (temp, unit = "Kelvin") {
 };
 
 const showWeather = function (weather) {
-  console.log(weather);
+  console.log("Weather", weather);
   console.log(convertTemp(weather.main.temp, "Fahrenheit"));
 };
 
@@ -25,11 +25,10 @@ const getWeatherData = async function (location) {
         mode: "cors",
       }
     );
-
     const weather = await data.json();
     showWeather(weather);
   } catch (err) {
-    console.log(err);
+    console.log("There was an error");
   }
 };
 
@@ -46,4 +45,4 @@ const getWeatherData = async function (location) {
 //     .catch((err) => console.log(err));
 // };
 
-getWeatherData("San Francisco");
+getWeatherData("Torl Aviv");
