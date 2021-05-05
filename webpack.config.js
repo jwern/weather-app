@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./src/index.js", // The starting point for your JavaScript files
+  entry: "./src/index.js",
   output: {
     filename: "main.js",
   },
