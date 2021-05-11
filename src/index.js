@@ -1,5 +1,5 @@
 import "./style.scss";
-import { getAPIKey } from "./apiKey.js";
+import { secretKey } from "./apiKey.js";
 
 const convertTemp = function (temp, unit = "Kelvin") {
   const unitConversion = {
@@ -12,37 +12,48 @@ const convertTemp = function (temp, unit = "Kelvin") {
   return convertedTemp;
 };
 
-const showWeather = function (weather) {
-  console.log("Weather", weather);
-  console.log(convertTemp(weather.main.temp, "Fahrenheit"));
+const translateWeather = function (weather, unit) {
+  const weatherType = weather.weather[0].main;
+  const weatherTemp = convertTemp(weather.main.temp, unit);
+
+  return { weatherType, weatherTemp };
 };
 
-const getWeatherData = async function (location) {
-  try {
-    const data = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${getAPIKey()}`,
-      {
-        mode: "cors",
-      }
-    );
-    const weather = await data.json();
-    showWeather(weather);
-  } catch (err) {
-    console.log("There was an error");
+const displayWeather = function (weatherObject) {
+  const tempDiv = document.getElementById("show-temp");
+  const typeDiv = document.getElementById("show-description");
+
+  tempDiv.innerText = weatherObject.weatherTemp;
+  typeDiv.innerText = weatherObject.weatherType;
+};
+
+const fetchWeatherData = function (location) {
+  return fetch(
+    `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${secretKey}`,
+    {
+      mode: "cors",
+    }
+  )
+    .then((result) => result.json())
+    .then((response) => response)
+    .catch((err) => console.log("The error", err));
+};
+
+const fetchAndDisplayWeather = async function (location, unit) {
+  let weather = await fetchWeatherData(location);
+  const weatherData = translateWeather(weather, unit);
+
+  displayWeather(weatherData);
+};
+
+const getFormData = function (e) {
+  e.preventDefault();
+
+  let formInputs = Object.fromEntries(new FormData(e.target).entries());
+  if (formInputs.city) {
+    fetchAndDisplayWeather(formInputs.city, formInputs.tempUnit);
   }
 };
 
-// Promise / Then version of async / await function from above
-// const getWeatherDataPromiseThen = function (location) {
-//   fetch(
-//     `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${secretKey.getKey()}`,
-//     {
-//       mode: "cors",
-//     }
-//   )
-//     .then((response) => response.json())
-//     .then((jsonData) => showWeather(jsonData))
-//     .catch((err) => console.log(err));
-// };
-
-getWeatherData("Torl Aviv");
+const weatherForm = document.getElementById("weather-form");
+weatherForm.addEventListener("submit", getFormData);
