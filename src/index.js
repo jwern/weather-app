@@ -15,16 +15,30 @@ const convertTemp = function (temp, unit = "Kelvin") {
 const translateWeather = function (weather, unit) {
   const weatherType = weather.weather[0].main;
   const weatherTemp = convertTemp(weather.main.temp, unit);
+  const weatherLocation = weather.name;
 
-  return { weatherType, weatherTemp };
+  return { weatherType, weatherTemp, weatherLocation };
 };
 
 const displayWeather = function (weatherObject) {
   const tempDiv = document.getElementById("show-temp");
   const typeDiv = document.getElementById("show-description");
+  const cityDiv = document.getElementById("show-city-name");
 
-  tempDiv.innerText = weatherObject.weatherTemp;
+  tempDiv.innerHTML = `${weatherObject.weatherTemp}&#730;`;
   typeDiv.innerText = weatherObject.weatherType;
+  cityDiv.innerText = weatherObject.weatherLocation;
+};
+
+const displayError = function (error) {
+  let errorDiv = document.getElementById("error-message");
+  if (!errorDiv) {
+    errorDiv = document.createElement("div");
+    errorDiv.id = "error-message";
+    let showWeatherDiv = document.getElementById("show-weather-banner");
+    showWeatherDiv.appendChild(errorDiv);
+  }
+  errorDiv.innerText = `There was an error: ${error.statusText}`;
 };
 
 const fetchWeatherData = function (location) {
@@ -34,16 +48,23 @@ const fetchWeatherData = function (location) {
       mode: "cors",
     }
   )
-    .then((result) => result.json())
+    .then((result) => {
+      if (result.ok) {
+        return result.json();
+      } else {
+        throw result;
+      }
+    })
     .then((response) => response)
-    .catch((err) => console.log("The error", err));
+    .catch((err) => displayError(err));
 };
 
 const fetchAndDisplayWeather = async function (location, unit) {
   let weather = await fetchWeatherData(location);
-  const weatherData = translateWeather(weather, unit);
-
-  displayWeather(weatherData);
+  if (weather) {
+    const weatherData = translateWeather(weather, unit);
+    displayWeather(weatherData);
+  }
 };
 
 const getFormData = function (e) {
