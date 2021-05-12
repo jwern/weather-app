@@ -16,18 +16,21 @@ const translateWeather = function (weather, unit) {
   const weatherType = weather.weather[0].main;
   const weatherTemp = convertTemp(weather.main.temp, unit);
   const weatherLocation = weather.name;
+  const weatherIcon = weather.weather[0].icon;
 
-  return { weatherType, weatherTemp, weatherLocation };
+  return { weatherType, weatherTemp, weatherLocation, weatherIcon };
 };
 
 const displayWeather = function (weatherObject) {
   const tempDiv = document.getElementById("show-temp");
   const typeDiv = document.getElementById("show-description");
   const cityDiv = document.getElementById("show-city-name");
+  const iconDiv = document.getElementById("show-icon");
 
   tempDiv.innerHTML = `${weatherObject.weatherTemp}&#730;`;
   typeDiv.innerText = weatherObject.weatherType;
   cityDiv.innerText = weatherObject.weatherLocation;
+  iconDiv.innerHTML = `<img src="http://openweathermap.org/img/wn/${weatherObject.weatherIcon}@2x.png">`;
 };
 
 const displayError = function (error) {
@@ -62,6 +65,7 @@ const fetchWeatherData = function (location) {
 const fetchAndDisplayWeather = async function (location, unit) {
   let weather = await fetchWeatherData(location);
   if (weather) {
+    console.log(weather.weather[0].icon);
     const weatherData = translateWeather(weather, unit);
     displayWeather(weatherData);
   }
@@ -78,3 +82,7 @@ const getFormData = function (e) {
 
 const weatherForm = document.getElementById("weather-form");
 weatherForm.addEventListener("submit", getFormData);
+
+window.addEventListener("load", (e) =>
+  fetchAndDisplayWeather("San Francisco", "Fahrenheit")
+);
