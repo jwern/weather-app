@@ -12,13 +12,32 @@ const convertTemp = function (temp, unit = "Kelvin") {
   return convertedTemp;
 };
 
+const getTempClimate = function (temp) {
+  if (temp < 273) {
+    return "cold";
+  } else if (temp < 283) {
+    return "cool";
+  } else if (temp < 295) {
+    return "warm";
+  } else {
+    return "hot";
+  }
+};
+
 const translateWeather = function (weather, unit) {
   const weatherType = weather.weather[0].main;
+  const weatherClimate = getTempClimate(weather.main.temp);
   const weatherTemp = convertTemp(weather.main.temp, unit);
   const weatherLocation = weather.name;
   const weatherIcon = weather.weather[0].icon;
 
-  return { weatherType, weatherTemp, weatherLocation, weatherIcon };
+  return {
+    weatherType,
+    weatherClimate,
+    weatherTemp,
+    weatherLocation,
+    weatherIcon,
+  };
 };
 
 const displayWeather = function (weatherObject) {
@@ -31,6 +50,20 @@ const displayWeather = function (weatherObject) {
   typeDiv.innerText = weatherObject.weatherType;
   cityDiv.innerText = weatherObject.weatherLocation;
   iconDiv.innerHTML = `<img src="http://openweathermap.org/img/wn/${weatherObject.weatherIcon}@2x.png">`;
+};
+
+const updateBackgroundColor = function (weatherObject) {
+  const tempColors = {
+    cold: ["#9ec3fe", "#a8e1ff"],
+    cool: ["#7341e8", "#4497ed"],
+    warm: ["#1BA26E", "#22CE8C"],
+    hot: ["#fe7e29", "#f75688"],
+  };
+
+  const weatherBanner = document.getElementById("show-weather-banner");
+  weatherBanner.style.background = `linear-gradient(190deg, ${
+    tempColors[weatherObject.weatherClimate][0]
+  } 58%, ${tempColors[weatherObject.weatherClimate][1]} 60%`;
 };
 
 const displayError = function (error) {
@@ -65,9 +98,9 @@ const fetchWeatherData = function (location) {
 const fetchAndDisplayWeather = async function (location, unit) {
   let weather = await fetchWeatherData(location);
   if (weather) {
-    console.log(weather.weather[0].icon);
     const weatherData = translateWeather(weather, unit);
     displayWeather(weatherData);
+    updateBackgroundColor(weatherData);
   }
 };
 
