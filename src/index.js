@@ -24,10 +24,19 @@ const getTempClimate = function (temp) {
   }
 };
 
+const getUnitIcon = function (unit) {
+  if (unit === "Kelvin") {
+    return "K";
+  } else {
+    return "&#730;";
+  }
+};
+
 const translateWeather = function (weather, unit) {
   const weatherType = weather.weather[0].main;
   const weatherClimate = getTempClimate(weather.main.temp);
   const weatherTemp = convertTemp(weather.main.temp, unit);
+  const weatherUnitIcon = getUnitIcon(unit);
   const weatherLocation = weather.name;
   const weatherIcon = weather.weather[0].icon;
 
@@ -35,6 +44,7 @@ const translateWeather = function (weather, unit) {
     weatherType,
     weatherClimate,
     weatherTemp,
+    weatherUnitIcon,
     weatherLocation,
     weatherIcon,
   };
@@ -46,24 +56,20 @@ const displayWeather = function (weatherObject) {
   const cityDiv = document.getElementById("show-city-name");
   const iconDiv = document.getElementById("show-icon");
 
-  tempDiv.innerHTML = `${weatherObject.weatherTemp}&#730;`;
+  tempDiv.innerHTML = `${weatherObject.weatherTemp}${weatherObject.weatherUnitIcon}`;
   typeDiv.innerText = weatherObject.weatherType;
   cityDiv.innerText = weatherObject.weatherLocation;
   iconDiv.innerHTML = `<img src="http://openweathermap.org/img/wn/${weatherObject.weatherIcon}@2x.png">`;
 };
 
 const updateBackgroundColor = function (weatherObject) {
-  const tempColors = {
-    cold: ["#9ec3fe", "#a8e1ff"],
-    cool: ["#7341e8", "#4497ed"],
-    warm: ["#1BA26E", "#22CE8C"],
-    hot: ["#fe7e29", "#f75688"],
-  };
+  const climateOptions = ["cold", "cool", "warm", "hot"];
 
   const weatherBanner = document.getElementById("show-weather-banner");
-  weatherBanner.style.background = `linear-gradient(190deg, ${
-    tempColors[weatherObject.weatherClimate][0]
-  } 58%, ${tempColors[weatherObject.weatherClimate][1]} 60%`;
+  for (let option of climateOptions) {
+    weatherBanner.classList.remove(option);
+  }
+  weatherBanner.classList.add(weatherObject.weatherClimate);
 };
 
 const displayError = function (error) {
