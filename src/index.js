@@ -77,6 +77,14 @@ const displayError = function (error) {
   errorDiv.innerText = `There was an error: ${error.statusText}`;
 };
 
+const removeError = function () {
+  let errorDiv = document.getElementById("error-message");
+  if (errorDiv) {
+    let showWeatherDiv = document.getElementById("show-weather-banner");
+    showWeatherDiv.removeChild(errorDiv);
+  }
+};
+
 const fetchWeatherData = function (location) {
   return fetch(
     `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${secretKey}`,
@@ -101,6 +109,7 @@ const fetchAndDisplayWeather = async function (location, unit) {
     const weatherData = translateWeather(weather, unit);
     displayWeather(weatherData);
     updateBackgroundColor(weatherData);
+    removeError();
   }
 };
 
