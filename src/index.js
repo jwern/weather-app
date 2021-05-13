@@ -65,11 +65,11 @@ const displayWeather = function (weatherObject) {
 const updateBackgroundColor = function (weatherObject) {
   const climateOptions = ["cold", "cool", "warm", "hot"];
 
-  const weatherBanner = document.getElementById("show-weather-banner");
+  // const weatherBanner = document.getElementById("show-weather-banner");
   for (let option of climateOptions) {
-    weatherBanner.classList.remove(option);
+    document.body.classList.remove(option);
   }
-  weatherBanner.classList.add(weatherObject.weatherClimate);
+  document.body.classList.add(weatherObject.weatherClimate);
 };
 
 const displayError = function (error) {

@@ -1,3 +1,17 @@
+@mixin temp-based-background($topColor, $bottomColor) {
+  background: $topColor;
+  background: linear-gradient(190deg, $topColor 58%, $bottomColor 60%);
+}
+
+$cold-top: rgba(158, 195, 254, 1);
+$cold-bottom: rgba(168, 225, 255, 1);
+$cool-top: rgba(115, 65, 232, 1);
+$cool-bottom: rgba(68, 151, 237, 1);
+$warm-top: rgba(27, 162, 110, 1);
+$warm-bottom: rgba(34, 206, 140, 1);
+$hot-top: rgba(254, 126, 41, 1);
+$hot-bottom: rgba(247, 86, 136, 1);
+
 html {
   font-size: 20px;
   @media (max-width: 500px) {
@@ -8,43 +22,74 @@ body {
   font-size: 1rem;
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+  @media (max-width: 500px) {
+    height: 100vh;
+  }
+  &.cold {
+    background-color: scale-color($cold-top, $lightness: 10%);
+    #show-weather-banner {
+      @include temp-based-background($cold-top, $cold-bottom);
+    }
+    #get-weather-form {
+      background-color: scale-color($cold-bottom, $lightness: 30%);
+    }
+  }
+  &.cool {
+    background-color: scale-color($cool-top, $lightness: 10%);
+    #show-weather-banner {
+      @include temp-based-background($cool-top, $cool-bottom);
+    }
+    #get-weather-form {
+      background-color: scale-color($cool-bottom, $lightness: 30%);
+    }
+  }
+  &.warm {
+    background-color: scale-color($warm-top, $lightness: 10%);
+    #show-weather-banner {
+      @include temp-based-background($warm-top, $warm-bottom);
+    }
+    #get-weather-form {
+      background-color: scale-color($warm-bottom, $lightness: 30%);
+    }
+  }
+  &.hot {
+    background-color: scale-color($hot-top, $lightness: 10%);
+    #show-weather-banner {
+      @include temp-based-background($hot-top, $hot-bottom);
+    }
+    #get-weather-form {
+      background-color: scale-color($hot-bottom, $lightness: 30%);
+    }
+  }
 }
-#show-weather-banner {
-  display: grid;
-  grid-template-rows: 2fr 1fr 2fr 2fr;
+#content {
   width: 75vw;
   max-width: 600px;
   margin: auto;
   margin-top: 10vh;
-  color: white;
-  border-radius: 10px;
-  text-align: center;
-  -webkit-box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
-  box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
-  &.cold {
-    background: #9ec3fe;
-    background: linear-gradient(190deg, #9ec3fe 58%, #a8e1ff 60%);
-  }
-  &.cool {
-    background: #7341e8;
-    background: linear-gradient(190deg, #7341e8 58%, #4497ed 60%);
-  }
-  &.warm {
-    background: #1ba26e;
-    background: linear-gradient(190deg, #1ba26e 58%, #22ce8c 60%);
-  }
-  &.hot {
-    background: #fe7e29;
-    background: linear-gradient(190deg, #fe7e29 58%, #f75688 60%);
-  }
   @media (max-width: 500px) {
     width: 100%;
     max-width: unset;
     height: 100%;
-    border-radius: unset;
     margin-top: unset;
   }
-  #show-temp {
+}
+#show-weather-banner {
+  display: grid;
+  grid-template-rows: 2fr 1fr 2fr 2fr;
+  color: white;
+  border-radius: 10px;
+  position: relative;
+  z-index: 30;
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
+  box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
+  @media (max-width: 500px) {
+    border-radius: unset;
+    height: calc(100% - 80px);
+  }
+  #show-temp,
+  #show-icon {
     font-size: 3rem;
   }
   #show-description {
@@ -54,14 +99,46 @@ body {
     font-size: 1.5rem;
     padding: 40px;
   }
-  #show-icon {
-    font-size: 3rem;
-  }
 }
 #get-weather-form {
-  border: 2px solid blue;
-  width: 300px;
-  input {
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  margin-top: -10px;
+  @media (max-width: 500px) {
+    height: 80px;
+    border-radius: unset;
+    margin-top: unset;
+    padding-bottom: unset;
+  }
+  input,
+  select {
     font-family: inherit;
+    font-size: 0.75rem;
+  }
+  select {
+    appearance: none;
+    background-color: rgba(13, 4, 104, 0.85);
+    background-image: url("../images/chevron-down-outline.svg");
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-size: 30px;
+    min-width: 6rem;
+  }
+  input[type="submit"],
+  select {
+    border: 2px solid white;
+    border-radius: 5px;
+    height: 30px;
+    background-color: rgba(13, 4, 104, 0.85);
+    cursor: pointer;
+    color: white;
+    &:hover {
+      background-color: white;
+      color: rgba(13, 4, 104, 1);
+      border: 2px solid rgba(13, 4, 104, 0.85);
+    }
   }
 }
