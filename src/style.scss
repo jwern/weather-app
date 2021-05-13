@@ -11,6 +11,7 @@ $warm-top: rgba(27, 162, 110, 1);
 $warm-bottom: rgba(34, 206, 140, 1);
 $hot-top: rgba(254, 126, 41, 1);
 $hot-bottom: rgba(247, 86, 136, 1);
+$buttons-and-shadow: rgba(29, 19, 117, 0.85);
 
 html {
   font-size: 20px;
@@ -82,8 +83,8 @@ body {
   position: relative;
   z-index: 30;
   text-align: center;
-  -webkit-box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
-  box-shadow: 0px 0px 6px 1px rgba(13, 4, 104, 0.85);
+  -webkit-box-shadow: 0px 0px 6px 1px $buttons-and-shadow;
+  box-shadow: 0px 0px 6px 1px $buttons-and-shadow;
   @media (max-width: 500px) {
     border-radius: unset;
     height: calc(100% - 80px);
@@ -120,7 +121,7 @@ body {
   }
   select {
     appearance: none;
-    background-color: rgba(13, 4, 104, 0.85);
+    background-color: $buttons-and-shadow;
     background-image: url("../images/chevron-down-outline.svg");
     background-repeat: no-repeat;
     background-position: 98%;
@@ -132,13 +133,13 @@ body {
     border: 2px solid white;
     border-radius: 5px;
     height: 30px;
-    background-color: rgba(13, 4, 104, 0.85);
+    background-color: $buttons-and-shadow;
     cursor: pointer;
     color: white;
     &:hover {
       background-color: white;
-      color: rgba(13, 4, 104, 1);
-      border: 2px solid rgba(13, 4, 104, 0.85);
+      color: $buttons-and-shadow;
+      border: 2px solid $buttons-and-shadow;
     }
   }
 }
