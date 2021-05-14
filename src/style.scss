@@ -13,6 +13,27 @@ $hot-top: rgba(254, 126, 41, 1);
 $hot-bottom: rgba(247, 86, 136, 1);
 $buttons-and-shadow: rgba(29, 19, 117, 0.85);
 
+@keyframes rainbow-border {
+  0% {
+    border-color: $cold-top;
+  }
+  20% {
+    border-color: $warm-top;
+  }
+  40% {
+    border-color: $hot-top;
+  }
+  60% {
+    border-color: $cool-top;
+  }
+  80% {
+    border-color: $warm-bottom;
+  }
+  100% {
+    border-color: $hot-bottom;
+  }
+}
+
 html {
   font-size: 20px;
   @media (max-width: 500px) {
@@ -125,8 +146,8 @@ body {
     background-image: url("../images/chevron-down-outline.svg");
     background-repeat: no-repeat;
     background-position: 98%;
-    background-size: 30px;
-    min-width: 6rem;
+    background-size: 1rem;
+    min-width: 5.5rem;
   }
   input[type="submit"],
   select {
@@ -136,10 +157,14 @@ body {
     background-color: $buttons-and-shadow;
     cursor: pointer;
     color: white;
+    transition: background-color 0.25s;
     &:hover {
       background-color: white;
       color: $buttons-and-shadow;
       border: 2px solid $buttons-and-shadow;
+    }
+    &.button-loading {
+      animation: rainbow-border 1.5s infinite;
     }
   }
 }

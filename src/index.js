@@ -15,7 +15,7 @@ const convertTemp = function (temp, unit = "Kelvin") {
 const getTempClimate = function (temp) {
   if (temp < 273) {
     return "cold";
-  } else if (temp < 283) {
+  } else if (temp < 288) {
     return "cool";
   } else if (temp < 295) {
     return "warm";
@@ -109,6 +109,16 @@ const fetchWeatherData = function (location) {
     .catch((err) => displayError(err));
 };
 
+const showLoadingMessage = function (message) {
+  const getWeatherButton = document.getElementById("get-weather-button");
+  getWeatherButton.value = message;
+  getWeatherButton.classList.toggle("button-loading");
+};
+
+const clearLoadingMessage = function () {
+  showLoadingMessage("Get Current Weather");
+};
+
 const fetchAndDisplayWeather = async function (location, unit) {
   let weather = await fetchWeatherData(location);
   if (weather) {
@@ -117,6 +127,7 @@ const fetchAndDisplayWeather = async function (location, unit) {
     updateBackgroundColor(weatherData);
     removeError();
   }
+  clearLoadingMessage();
 };
 
 const getFormData = function (e) {
@@ -124,6 +135,7 @@ const getFormData = function (e) {
 
   let formInputs = Object.fromEntries(new FormData(e.target).entries());
   if (formInputs.city) {
+    showLoadingMessage("Loading...");
     fetchAndDisplayWeather(formInputs.city, formInputs.tempUnit);
   }
 };
