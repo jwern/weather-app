@@ -108,7 +108,7 @@ body {
   box-shadow: 0px 0px 6px 1px $buttons-and-shadow;
   @media (max-width: 500px) {
     border-radius: unset;
-    height: calc(100% - 80px);
+    height: calc(100% - 100px);
   }
   #show-temp,
   #show-icon {
@@ -130,7 +130,7 @@ body {
   padding-bottom: 10px;
   margin-top: -10px;
   @media (max-width: 500px) {
-    height: 80px;
+    height: 100px;
     border-radius: unset;
     margin-top: unset;
     padding-bottom: unset;
@@ -139,6 +139,9 @@ body {
   select {
     font-family: inherit;
     font-size: 0.75rem;
+    @media (max-width: 500px) {
+      margin-bottom: 6px;
+    }
   }
   select {
     appearance: none;
