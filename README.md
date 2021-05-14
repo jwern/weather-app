@@ -6,7 +6,7 @@ This is my solution to The Odin Project's [Weather App project](https://www.theo
 
 ## Project Post-Mortem
 
-Compared to some past Odin projects that required heavy DOM manipulation and longterm data management, this weather app is pretty simple. Its biggest complexity is in asynchronously fetching external data from OpenWeather. The layout and amount of actual on-site elements are fairly minimal: it features a form that lets users input a city and temperature unit type and an area to display some of the data retrieved.
+Compared to some past Odin projects that required heavy DOM manipulation and longterm data management, this weather app is pretty simple. Its biggest complexity is in asynchronously fetching external data from OpenWeather. The layout and amount of actual on-site elements are fairly minimal: it features a form that lets users input a city and temperature unit type and an area to display some of the data retrieved. Most of the optional suggestions from TOP have been implemented: the background of the app changes colors based on the temperature retrieved (with four colors currently for "cold," "cool", "warm," and "hot"); there is an animated "Loading" notice while the `fetch()` is running, but this is rarely seen as the OpenWeather API is very fast.
 
 ## Challenges
 
@@ -43,4 +43,4 @@ Feel free to rename this file and variable as you please; just be sure to update
 
 ## Technologies
 
-This weather app was built with HTML, SCSS, and JavaScript. It uses npm for library management and webpack for bundling modules and compiling SCSS to CSS. It uses the [OpenWeather](https://openweathermap.org/) API to gather real-time weather data: the city name, temperature, weather description ("clear," "clouds," etc.), and weather icon are all taken from OpenWeather via a free API key. The down arrow / carrot on the temperature unit select dropdown is from [IonIcons](https://ionic.io/ionicons).
+This weather app was built with HTML, SCSS, and JavaScript. It uses npm for library management and webpack for bundling modules and compiling SCSS to CSS. It uses the [OpenWeather](https://openweathermap.org/) API to gather real-time weather data: the city name, temperature, weather description ("clear," "clouds," etc.), and weather icon are all taken from OpenWeather via a free API key. The down arrow / caret on the temperature unit select dropdown is from [IonIcons](https://ionic.io/ionicons).
